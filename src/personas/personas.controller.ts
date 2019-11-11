@@ -7,19 +7,19 @@ import {PersonaDto} from "./persona.dto"
 export class PersonasController {
     constructor(private readonly personasServ:PersonasService) {}
     @Get()
-    getPersonas():Persona[] {
+    getPers():Promise<Persona[]> {
         // console.log(this.personasServ[0])
-        return this.personasServ.getAll();
+        return this.personasServ.getPersonas();
     }
     @Get(':id')
-    getPersona(@Param('id') id):Persona {
-        console.log(this.personasServ.getPersonaId(parseInt(id)));
-        return this.personasServ.getPersonaId(parseInt(id));
+    getPersona(@Param('id') id) {
+        // console.log(this.personasServ.getPersonaId(parseInt(id)));
+        return this.personasServ.getPersona(id);
     }
     @Post()
-    creaPersona(@Body() pers: PersonaDto) {
-        console.log(pers.nombre);
-        return 'creada Persona!!!!!'
+    creaPersona(@Body() pers: Persona): Promise<Persona> {
+        // console.log(pers.nombre);
+        return this.personasServ.createPersona(pers)
     }
     
 }

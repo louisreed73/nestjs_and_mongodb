@@ -1,47 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { Persona} from './persona.interface';
-import { tsImportEqualsDeclaration } from '@babel/types';
+
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
+import {Persona} from './persona.interface';
+import { PersonaDto } from './persona.dto';
 
 @Injectable()
 export class PersonasService {
-    personas: Persona[]=[
-        {
-            id:1,
-            nombre:"Ana",
-            edad:39,
-            ciudad:"Madrid",
-            profesion:"Enseñanza"
-        },
-        {
-            id:2,
-            nombre:"Monica",
-            edad:47,
-            ciudad:"Toledo",
-            profesion:"Desconocido"
-        },
-        {
-            id:3,
-            nombre:"Luis",
-            edad:46,
-            ciudad:"Madrid",
-            profesion:"Web Developper"
-        },
-        {
-            id:4,
-            nombre: "Julian",
-            edad: 44,
-            ciudad: "Madrid",
-            profesion: "IT Sistemas"
-        }
-    ];
-    getAll():Persona[] {
-        return this.personas
-    };
-    getPersonaId(id:number):Persona {
-        return this.personas.find(persona=>persona.id===id)
+    constructor(@InjectModel('Persona') private personaModel: Model<Persona>) {}
+
+    async getPersonas() {
+        return await this.personaModel.find()
     }
-    setPersona(pers:Persona) {
-        this.personas.push(pers)
+    async getPersona(id:string) {
+        return await this.personaModel.findById(id)
     }
+    async createPersona(pers:Persona) {
+        let persona= new this.personaModel(pers);
+        console.log("Persona Saved!!!")
+        return await persona.save();
+        
+    }
+
+
 
 }

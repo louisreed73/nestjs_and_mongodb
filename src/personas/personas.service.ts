@@ -11,10 +11,20 @@ export class PersonasService {
     constructor(@InjectModel('Persona') private personaModel: Model<Persona>) {}
 
     async getPersonas() {
-        return await this.personaModel.find()
+
+        let array=await this.personaModel.find();
+console.log(array.filter(pers=>pers.edad>41))
+
+        return array
     }
+
+
     async getPersona(id:string) {
         return await this.personaModel.findById(id)
+    }
+
+    async deletePersona(id:string) {
+        return await this.personaModel.deleteOne({_id:id})
     }
     async createPersona(pers:Persona) {
         let persona= new this.personaModel(pers);

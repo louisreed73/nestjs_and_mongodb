@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete } from '@nestjs/common';
 import {PersonasService} from './personas.service';
 import {Persona} from './persona.interface';
 import {PersonaDto} from "./persona.dto"
@@ -20,6 +20,13 @@ export class PersonasController {
     creaPersona(@Body() pers: Persona): Promise<Persona> {
         // console.log(pers.nombre);
         return this.personasServ.createPersona(pers)
+    }
+
+    @Delete(":id")
+    delete(@Param("id") id ) {
+
+        return this.personasServ.deletePersona(id)
+
     }
     
 }
